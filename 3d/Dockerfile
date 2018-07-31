@@ -5,7 +5,7 @@
 # docker build -t 3d:latest .
 #
 # https://blog.codeship.com/the-basics-of-the-docker-run-command/
-# sudo nvidia-docker run --name 3d_0 --tmpfs /tmp 3d:latest 
+# sudo nvidia-docker run -v /mnt:/mnt --name 3d_0 --tmpfs /tmp 3d:latest 
 FROM nvidia/cuda:7.5-devel
 
 # base

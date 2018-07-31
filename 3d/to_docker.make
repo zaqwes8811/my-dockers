@@ -12,9 +12,11 @@ cd build
 # I...base
 cmake -DCMAKE_INSTALL_PREFIX=/opt/lib/openexr ..
 
- cd ../../OpenEXR
+cd ../../OpenEXR
 
 # op....
+mkdir build && cd build 
+#&& \
 cmake -DCMAKE_INSTALL_PREFIX=/opt/lib/openexr -DILMBASE_PACKAGE_PREFIX=/opt/lib/openexr  ..
 
 sudo ln -s /usr/include/OpenEXR/ /usr/local/include/

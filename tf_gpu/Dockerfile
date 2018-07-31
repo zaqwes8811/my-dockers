@@ -1,7 +1,7 @@
 # docker build -t tf_gpu:latest .
 #
 # https://blog.codeship.com/the-basics-of-the-docker-run-command/
-# sudo nvidia-docker run -v /mnt:/mnt --name tf_gpu_0 --tmpfs /tmp tf_gpu:latest 
+# sudo nvidia-docker run -v /mnt:/mnt -p 8888:8888 -p 6006:6006 --name tf_gpu_0 --tmpfs /tmp tf_gpu:latest 
 
 # fixme: from tf
 #FROM nvidia/cuda:7.5-devel
