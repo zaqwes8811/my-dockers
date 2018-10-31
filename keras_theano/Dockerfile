@@ -61,6 +61,8 @@ RUN /root/miniconda2/bin/pip install scikit-cuda \
 # tf
 # https://github.com/tensorflow/tensorflow/issues/12388
 # FIXME: как проверить что на gpu Запускаем?
+# check:
+# https://stackoverflow.com/questions/38009682/how-to-tell-if-tensorflow-is-using-gpu-acceleration-from-inside-python-shell
 
 # https://stackoverflow.com/questions/42177658/how-to-switch-backend-with-keras-from-tensorflow-to-theano
 # mkdir .keras
