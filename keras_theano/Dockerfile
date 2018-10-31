@@ -59,7 +59,7 @@ RUN curl -LO https://repo.continuum.io/miniconda/Miniconda2-latest-Linux-x86_64.
 # tipsy -> tisy
 RUN /root/miniconda2/bin/pip install cython \
 	&& /root/miniconda2/bin/conda update -y conda \
-	&& /root/miniconda2/bin/conda install tensorflow-gpu numpy mkl scipy nose sphinx pydot-ng \
+	&& /root/miniconda2/bin/conda install tensorflow-gpu==1.8.0 numpy mkl scipy nose sphinx pydot-ng \
 	matplotlib jupyterlab ipywidgets keras \
 	&& /root/miniconda2/bin/conda clean -tisy
 
