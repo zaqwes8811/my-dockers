@@ -15,14 +15,25 @@
 # RUN apk update && apk add wget && rm -rf /var/cache/apk/*
 
 # now Ubuntu
+# https://blog.ubuntu.com/2018/07/09/minimal-ubuntu-released
+# https://www.zdnet.com/article/minimal-ubuntu-for-containers-and-clouds/
+# 18 now minimal
+# https://github.com/tianon/docker-brew-ubuntu-core/tree/c7e9f7353aa24d1c35f501e06382aed1b540e85f
 #FROM ubuntu:16.04  # нужна cuda
+FROM ubuntu:18.04
 #FROM nvidia/cuda:7.5-devel
 # need cuDNN + runtime(врядли буду кодить для куды) + tf а не теано
 # FIXME: не отработана работа с runtime образами
 #FROM nvidia/cuda:7.5-cudnn5-runtime
 #FROM nvidia/cuda:8.0-cudnn5-runtime
 # но потом почему-то cudnn 7 доставляется
-FROM nvidia/cuda:7.5-cudnn5-devel  
+#FROM nvidia/cuda:7.5-cudnn5-devel
+# если ставить tf - начинает качать новье  
+# нет смысла ставить днн если ставить тензор, даже брать базовый образ как nvidia смысла нет
+#FROM nvidia/cuda:9.2-cudnn7-devel
+
+# https://anaconda.org/anaconda/tensorflow-gpu/files
+# /root/miniconda2/bin/conda install tensorflow-gpu==1.0.1
 
 LABEL authors="Igor Lugansky <igor.a.lugansky@gmail.com>, Golovchanskaia Iuiia <golju@bk.ru>"
 
