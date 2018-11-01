@@ -170,3 +170,17 @@ CMD ["/sbin/main.sh"]
 #WORKDIR /mnt/notebook
 #ENTRYPOINT ["/sbin/tini", "--"]
 #CMD ["jupyter", "lab", "--ip=0.0.0.0", "--port=8888", "--no-browser", "--allow-root"]
+
+# Troubles:
+# https://github.com/Theano/Theano/issues/6533
+# http://deeplearning.net/software/theano/troubleshooting.html
+# https://github.com/ChicagoBoothAnalytics/Software/blob/master/AWS/EMR/.config/.theanorc
+# ~/.theanorc 
+#[blas]
+#ldflags = -lf77blas -latlas -lgfortran #put your flags here
+#ldflags = -lf77blas -latlas -lgfortran #put your flags here
+#ldflags = -lmkl -lguide -lpthread -lmkl_intel_lp64 -lmkl_intel_thread -lmkl_core -lguide -liomp5 -lmkl_mc -lpthread
+
+
+# DANGER:
+# https://github.com/tensorflow/tensorflow/issues/16898
