@@ -85,9 +85,101 @@ RUN /root/miniconda2/bin/conda install tensorflow==1.10.0 \
 RUN /root/miniconda2/bin/conda install keras=2.0.2 \
 	&& /root/miniconda2/bin/conda clean -tisy
 
+# FIXME: remove useless files
+
 RUN wget https://cmake.org/files/v3.10/cmake-3.10.0.tar.gz \
 	&& tar -xvf cmake-3.10.0.tar.gz \
 	&& cd cmake-3.10.0 && ./configure && make -j4 && make install && cd ..
+
+# for opencv
+RUN apt-get update && apt-get install -y \
+	libtbb-dev \
+ 	&& rm -rf /var/lib/apt/lists/* 
+
+# opencvmake
+# python is special here
+#-D PYTHON_LIBRARY=/root/miniconda2/lib/python2.7/config/libpython2.7.a 
+RUN wget https://github.com/opencv/opencv/archive/2.4.2.tar.gz \
+	&& tar -xvf 2.4.2.tar.gz && cd opencv-2.4.2 && mkdir build && cd build \
+	&& cmake \
+		-DCMAKE_INSTALL_PREFIX="/opt/opencv-2.4.2" \
+		-DCMAKE_BUILD_TYPE=Release \
+		-DBUILD_SHARED_LIBS=ON \
+		-DBUILD_WITH_STATIC_CRT=OFF \
+		-DBUILD_DOCS=OFF \
+		-DBUILD_EXAMPLES=OFF \
+		-DBUILD_PACKAGE=OFF \
+		-DBUILD_TESTS=OFF \
+		-DBUILD_PERF_TESTS=OFF \
+		-DBUILD_WITH_DEBUG_INFO=OFF \
+		-DCMAKE_INSTALL_RPATH_USE_LINK_PATH=OFF \
+		-DCMAKE_SKIP_RPATH=OFF \
+		-DCMAKE_USE_RELATIVE_PATHS=OFF \
+		-DENABLE_FAST_MATH=ON \
+		-DENABLE_NOISY_WARNINGS=OFF \
+		-DENABLE_OMIT_FRAME_POINTER=ON \
+		-DENABLE_PRECOMPILED_HEADERS=OFF \
+		-DENABLE_PROFILING=OFF \
+		-DENABLE_SOLUTION_FOLDERS=OFF \
+		-DOPENCV_CAN_BREAK_BINARY_COMPATIBILITY=ON \
+		-DBUILD_opencv_core=ON \
+		-DBUILD_opencv_highgui=ON \
+		-DBUILD_opencv_imgproc=ON \
+		-DBUILD_opencv_ml=ON \
+		-DBUILD_opencv_python=ON \
+		-D PYTHON_EXECUTABLE=/root/miniconda2/bin/python \
+		-D PYTHON_INCLUDE_DIR=/root/miniconda2/include/python2.7 \
+		-DBUILD_opencv_ts=OFF \
+		-DENABLE_POWERPC=OFF \
+		-DENABLE_SSE=OFF \
+		-DENABLE_SSE2=OFF \
+		-DENABLE_SSE3=OFF \
+		-DENABLE_SSSE3=OFF \
+		-DBUILD_JASPER=OFF \
+		-DBUILD_JPEG=OFF \
+		-DBUILD_PNG=OFF \
+		-DBUILD_TIFF=OFF \
+		-DBUILD_ZLIB=OFF \
+		-DBUILD_ANDROID_CAMERA_WRAPPER=OFF \
+		-DBUILD_ANDROID_EXAMPLES=OFF \
+		-DBUILD_FAT_JAVA_LIB=OFF \
+		-DBUILD_JAVA_SUPPORT=OFF \
+		-DBUILD_NEW_PYTHON_SUPPORT=ON \
+		-DBUILD_PYTHON_SUPPORT=ON \
+		-DINSTALL_ANDROID_EXAMPLES=OFF \
+		-DINSTALL_C_EXAMPLES=OFF \
+		-DINSTALL_PYTHON_EXAMPLES=ON \
+		-DINSTALL_TO_MANGLED_PATHS=OFF \
+		-DWITH_1394=OFF \
+		-DWITH_ANDROID_CAMERA=OFF \
+		-DWITH_AVFOUNDATION=OFF \
+		-DWITH_CARBON=OFF \
+		-DWITH_CUBLAS=OFF \
+		-DWITH_CUDA=OFF \
+		-DWITH_CUFFT=OFF \
+		-DWITH_EIGEN=OFF \
+		-DWITH_IMAGEIO=OFF \
+		-DWITH_IPP=OFF \
+		-DWITH_JASPER=OFF \
+		-DWITH_OPENEXR=OFF \
+		-DWITH_OPENGL=OFF \
+		-DWITH_OPENNI=OFF \
+		-DWITH_PVAPI=OFF \
+		-DWITH_QUICKTIME=OFF \
+		-DWITH_TBB=ON \
+		-DWITH_UNICAP=OFF \
+		-DWITH_VIDEOINPUT=OFF \
+		-DWITH_XIMEA=OFF \
+		-DWITH_XINE=OFF \
+		-DWITH_FFMPEG=OFF \
+		-DWITH_GSTREAMER=OFF \
+		-DWITH_GTK=OFF \
+		-DWITH_JPEG=ON \
+		-DWITH_PNG=ON \
+		-DWITH_QT=OFF \
+		-DWITH_TIFF=OFF \
+		-DWITH_V4L=OFF .. \
+		&& make -j9 && make install
 
 #################################
 
@@ -147,14 +239,11 @@ RUN wget https://cmake.org/files/v3.10/cmake-3.10.0.tar.gz \
 
 # https://stackoverflow.com/questions/42177658/how-to-switch-backend-with-keras-from-tensorflow-to-theano
 # mkdir .keras
-# touch .keras.json
+# touch ./keras/keras.json
 # 
-#{
-#    "epsilon": 1e-07,
-#    "floatx": "float32",
-#    "image_data_format": "channels_last",
-#    "backend": "theano"
-#}
+
+COPY keras.json /root/.keras/
+COPY theanorc /root/.theanorc 
 
 # jupiter
 
@@ -165,7 +254,7 @@ RUN chmod +x /sbin/main.sh
 CMD ["/sbin/main.sh"]
 
 #/root/miniconda2/bin/jupyter-lab --ip=0.0.0.0 --port=8888 --allow-root
-#/root/miniconda2/bin/jupyter-notebook --ip=0.0.0.0 --port=8888 --allow-root
+# PYTHONPATH="`pwd`:/opt/opencv-2.4.2/lib/python2.7/site-packages" /root/miniconda2/bin/jupyter-notebook --ip=0.0.0.0 --port=8888 --allow-root
 
 #WORKDIR /mnt/notebook
 #ENTRYPOINT ["/sbin/tini", "--"]
@@ -176,11 +265,9 @@ CMD ["/sbin/main.sh"]
 # http://deeplearning.net/software/theano/troubleshooting.html
 # https://github.com/ChicagoBoothAnalytics/Software/blob/master/AWS/EMR/.config/.theanorc
 # ~/.theanorc 
-#[blas]
-#ldflags = -lf77blas -latlas -lgfortran #put your flags here
-#ldflags = -lf77blas -latlas -lgfortran #put your flags here
-#ldflags = -lmkl -lguide -lpthread -lmkl_intel_lp64 -lmkl_intel_thread -lmkl_core -lguide -liomp5 -lmkl_mc -lpthread
+
 
 
 # DANGER:
 # https://github.com/tensorflow/tensorflow/issues/16898
+
