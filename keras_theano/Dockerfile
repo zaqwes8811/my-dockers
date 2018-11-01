@@ -183,6 +183,22 @@ RUN wget https://github.com/opencv/opencv/archive/2.4.2.tar.gz \
 
 #################################
 
+# http://caffe.berkeleyvision.org/install_apt.html
+# https://stackoverflow.com/questions/46253744/getting-error-attributeerror-module-object-has-no-attribute-ifelse
+RUN /root/miniconda2/bin/conda install keras \
+	&& /root/miniconda2/bin/conda clean -tisy
+
+# mkl
+# https://gist.github.com/pachamaltese/afc4faef2f191b533556f261a46b3aa8
+
+RUN apt-get update && apt-get install -y \
+	libblas-dev liblapack-dev gfortran \
+	libatlas-base-dev libopenblas-dev \
+ 	&& rm -rf /var/lib/apt/lists/* 
+
+#BLAS: install ATLAS by sudo apt-get install libatlas-base-dev or install OpenBLAS by sudo apt-get install libopenblas-dev or MKL for better CPU performance.
+#sudo apt-get install libatlas-base-dev or install OpenBLAS by sudo apt-get install libopenblas-dev
+
 #theano:
 #https://stackoverflow.com/questions/21608025/how-to-set-up-theano-config
 # https://www.asozykin.ru/deep_learning/2017/03/11/How-to-use-gpu-with-theano.html
@@ -266,6 +282,8 @@ CMD ["/sbin/main.sh"]
 # https://github.com/ChicagoBoothAnalytics/Software/blob/master/AWS/EMR/.config/.theanorc
 # ~/.theanorc 
 
+
+# /root/miniconda2/bin/tensorboard  --logdir /Graph/
 
 
 # DANGER:
