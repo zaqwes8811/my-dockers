@@ -48,7 +48,7 @@
 FROM nvidia/cuda:8.0-devel
 # FROM nvidia/cuda:9.0-devel # полная закачка снова
 # FROM ubuntu:18.04
-# FIXME: а что с миникондой то делать?
+# FIXME: а что с миникондой то делать? еще N gb
 #FROM tensorflow/tensorflow:latest-gpu
 
 
@@ -76,12 +76,12 @@ RUN curl -LO https://repo.continuum.io/miniconda/Miniconda2-latest-Linux-x86_64.
 	&& rm Miniconda2-latest-Linux-x86_64.sh
 
 # UNSTABLE PART
-# tensorflow-gpu==1.10.0
 RUN /root/miniconda2/bin/conda install \
 	matplotlib jupyterlab ipywidgets numpy \
 	&& /root/miniconda2/bin/conda clean -tisy
 
 # => downgrade
+# tensorflow-gpu==1.10.0
 RUN /root/miniconda2/bin/conda install keras tensorflow-gpu==1.7.0 \
 	&& /root/miniconda2/bin/conda clean -tisy
 
