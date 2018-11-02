@@ -1,6 +1,6 @@
 # gpu не ниже Kepler - 3.0
 
-# sudo docker build -t ml_keras_tf_gpu:latest -f Dockerfile_tf_gpu
+# sudo docker build -t ml_keras_tf_gpu:latest -f Dockerfile_tf_gpu .
 
 # sudo docker start ml_keras_tf_gpu_0
 # sudo docker exec -it ml_keras_tf_gpu_0 bash
@@ -77,7 +77,7 @@ RUN curl -LO https://repo.continuum.io/miniconda/Miniconda2-latest-Linux-x86_64.
 
 # UNSTABLE PART
 RUN /root/miniconda2/bin/conda install \
-	matplotlib jupyterlab ipywidgets numpy \
+	matplotlib jupyterlab ipywidgets numpy scikit-learn \
 	&& /root/miniconda2/bin/conda clean -tisy
 
 # => downgrade
