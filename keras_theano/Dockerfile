@@ -215,43 +215,7 @@ RUN apt-get update && apt-get install -y \
 # libgpuarray
 # http://deeplearning.net/software/libgpuarray/installation.html
 
-###################################
-#
-# tf
-# From sources:
-# https://gist.github.com/jorgemf/d2f3d85fadeb6e9d88ab00a06fbca0a2
-#
-# https://anaconda.org/anaconda/tensorflow-gpu/files
-# /root/miniconda2/bin/conda install tensorflow-gpu==1.0.1
-# need cuDNN + runtime(врядли буду кодить для куды) + tf а не теано
-# FIXME: не отработана работа с runtime образами
-# Compotibility:
-# https://stackoverflow.com/questions/50622525/which-tensorflow-and-cuda-version-combinations-are-compatible
 
-# !!! https://www.tensorflow.org/install/source
-# Troubles: https://github.com/tensorflow/tensorflow/issues/18906
-# https://github.com/tensorflow/tensorflow/issues/12388
-# FIXME: как проверить что на gpu Запускаем?
-# check:
-# https://stackoverflow.com/questions/38009682/how-to-tell-if-tensorflow-is-using-gpu-acceleration-from-inside-python-shell
-#
-#
-
-# CPU
-# I tensorflow/core/platform/cpu_feature_guard.cc:141] Your CPU supports instructions that this TensorFlow binary was not compiled to use: SSE4.1 SSE4.2 AVX
-# 2018-11-01 09:14:16.068667: I tensorflow/core/common_runtime/process_util.cc:69] Creating new thread pool with default inter op setting: 2. Tune using inter_op_parallelism_threads for best performance.
-# Device mapping: no known devices.
-
-# если ставить tf - начинает качать новье  
-# нет смысла ставить днн если ставить тензор, даже брать базовый образ как nvidia смысла нет
-# там ставиться не совсем то, там нет cudatoolkit/nvcc and headers
-#totalMemory: 963.31MiB freeMemory: 624.25MiB
-#2018-11-01 08:47:38.489691: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1455] Ignoring visible gpu device (device: 0, name: GeForce GTX 560, pci bus id: 0000:01:00.0, compute capability: 2.1) 
-# with Cuda compute capability 2.1. The minimum required Cuda capability is 3.0.
-# https://stackoverflow.com/questions/38542763/how-can-i-make-tensorflow-run-on-a-gpu-with-capability-2-0 - NO WAY
-# CPU only
-
-###################################
 
 # https://stackoverflow.com/questions/42177658/how-to-switch-backend-with-keras-from-tensorflow-to-theano
 # mkdir .keras
