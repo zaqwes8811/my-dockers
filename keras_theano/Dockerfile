@@ -196,6 +196,9 @@ RUN apt-get update && apt-get install -y \
 	libatlas-base-dev libopenblas-dev \
  	&& rm -rf /var/lib/apt/lists/* 
 
+RUN /root/miniconda2/bin/conda install scikit-learn \
+	&& /root/miniconda2/bin/conda clean -tisy
+
 #BLAS: install ATLAS by sudo apt-get install libatlas-base-dev or install OpenBLAS by sudo apt-get install libopenblas-dev or MKL for better CPU performance.
 #sudo apt-get install libatlas-base-dev or install OpenBLAS by sudo apt-get install libopenblas-dev
 
