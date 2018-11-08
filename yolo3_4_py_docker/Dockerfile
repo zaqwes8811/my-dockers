@@ -1,3 +1,16 @@
+https://askubuntu.com/questions/913241/error-in-executing-opencv-in-ubuntu
+
+sudo apt install libgtk2.0-dev pkg-config
+
+cmake -DCMAKE_INSTALL_PREFIX="/opt/opencv-3.4.3" \
+		-DCMAKE_BUILD_TYPE=Release \
+		-DBUILD_DOCS=OFF \
+		-DBUILD_EXAMPLES=OFF \
+		-DWITH_IPP=ON -DWITH_QT=OFF -DWITH_TBB=ON -DENABLE_PRECOMPILED_HEADERS=OFF WITH_GTK_2_X=ON \
+		-D PYTHON_EXECUTABLE=/root/miniconda2/bin/python \
+		-D PYTHON_INCLUDE_DIR=/root/miniconda2/include/python2.7 \
+		..
+
 # sudo docker build -t yolo3_4_py:latest .
 
 #sudo docker stop yolo3_4_py_0 && docker rm yolo3_4_py_0
