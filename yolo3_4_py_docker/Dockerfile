@@ -11,6 +11,10 @@ cmake -DCMAKE_INSTALL_PREFIX="/opt/opencv-3.4.3" \
 		-D PYTHON_INCLUDE_DIR=/root/miniconda2/include/python2.7 \
 		..
 
+Speed up:
+https://github.com/pjreddie/darknet/issues/80
+https://groups.google.com/forum/#!topic/darknet/M921U9rxzPI
+
 # sudo docker build -t yolo3_4_py:latest .
 
 #sudo docker stop yolo3_4_py_0 && docker rm yolo3_4_py_0
