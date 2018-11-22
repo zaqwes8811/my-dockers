@@ -6,9 +6,10 @@ cmake -DCMAKE_INSTALL_PREFIX="/opt/opencv-3.4.3" \
 		-DCMAKE_BUILD_TYPE=Release \
 		-DBUILD_DOCS=OFF \
 		-DBUILD_EXAMPLES=OFF \
-		-DWITH_IPP=ON -DWITH_QT=OFF -DWITH_TBB=ON -DENABLE_PRECOMPILED_HEADERS=OFF WITH_GTK_2_X=ON \
-		-D PYTHON_EXECUTABLE=/root/miniconda2/bin/python \
-		-D PYTHON_INCLUDE_DIR=/root/miniconda2/include/python2.7 \
+		-DWITH_IPP=ON -DWITH_QT=OFF -DWITH_TBB=ON -DENABLE_PRECOMPILED_HEADERS=OFF \
+		-DWITH_GTK_2_X=ON \
+		-DPYTHON_EXECUTABLE=/root/miniconda2/bin/python \
+		-DPYTHON_INCLUDE_DIR=/root/miniconda2/include/python2.7 \
 		..
 
 Speed up:
