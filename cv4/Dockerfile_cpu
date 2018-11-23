@@ -5,8 +5,8 @@
 # https://elitedatascience.com/keras-tutorial-deep-learning-in-python
 # sudo docker build -t cv4:latest -f `pwd`/Dockerfile_cpu `pwd`
 
-# sudo docker start ml_keras_tf_theano_0
-# sudo docker exec -it ml_keras_tf_theano_0 bash
+# sudo docker start cv4_00
+# sudo docker exec -it cv4_00 bash
 
 # Stopped...
 # https://hub.docker.com/r/eipdev/alpine-jupyter-notebook/~/dockerfile/
@@ -70,25 +70,41 @@ RUN /root/miniconda2/bin/pip install cython \
 # RUN /root/miniconda2/bin/conda install scikit-learn \
 # 	&& /root/miniconda2/bin/conda clean -tisy
 
+
+# https://github.com/opencv/opencv_contrib/issues/1131
+RUN apt-get update && apt-get install -y \
+	libcurl4-openssl-dev \
+	libleptonica-dev libtesseract-dev \
+	zlib1g-dev \
+ 	&& rm -rf /var/lib/apt/lists/* 
+
 RUN wget https://cmake.org/files/v3.10/cmake-3.10.0.tar.gz \
 	&& tar -xvf cmake-3.10.0.tar.gz \
-	&& cd cmake-3.10.0 && ./configure && make -j4 && make install && cd ..
+	&& cd cmake-3.10.0 && ./bootstrap --system-curl && make -j9 && make install && cd ..
 
 # opencvmake
 # for slow inet and debug
-RUN cd /tmp \
+RUN cd / \
 	&& wget https://github.com/opencv/opencv/archive/4.0.0.tar.gz \
 	&& wget https://github.com/opencv/opencv_contrib/archive/4.0.0.tar.gz -O opencv_contrib-4.0.0.tar.gz
 
+# https://www.webuildinternet.com/2016/06/28/installing-opencv-with-tesseract-text-module-on-ubuntu/
 # python is special here
 # https://github.com/opencv/opencv_contrib/issues/1301
 # fatal error: boostdesc_bgm.i: No such file or directory
-RUN cd /tmp \
+# Checking for modules 'tesseract;lept'
+#
+# Cuda old
+# nvcc fatal   : Unsupported gpu architecture 'compute_60'
+#
+# re.c:68:21: note: #pragma message: Atomic operations are not supported by this compiler. 
+
+RUN cd / \
 	&& tar -xvf 4.0.0.tar.gz \
 	&& tar -xvf opencv_contrib-4.0.0.tar.gz \
 	&& cd opencv-4.0.0 && mkdir build && cd build \
 	&& cmake \
-		-DOPENCV_EXTRA_MODULES_PATH="/tmp/opencv_contrib-4.0.0/modules" \
+		-DOPENCV_EXTRA_MODULES_PATH="/opencv_contrib-4.0.0/modules" \
 		-DCMAKE_INSTALL_PREFIX="/opt/opencv-4.0.0" \
 		-DCMAKE_BUILD_TYPE=Release \
 		-DBUILD_SHARED_LIBS=ON \
@@ -114,8 +130,8 @@ RUN cd /tmp \
 		-DBUILD_opencv_imgproc=ON \
 		-DBUILD_opencv_ml=ON \
 		-DBUILD_opencv_python=ON \
-		-D PYTHON_EXECUTABLE=/root/miniconda2/bin/python \
-		-D PYTHON_INCLUDE_DIR=/root/miniconda2/include/python2.7 \
+		-DPYTHON_EXECUTABLE=/root/miniconda2/bin/python \
+		-DPYTHON_INCLUDE_DIR=/root/miniconda2/include/python2.7 \
 		-DENABLE_POWERPC=OFF \
 		-DBUILD_JASPER=OFF \
 		-DBUILD_JPEG=OFF \
@@ -136,9 +152,11 @@ RUN cd /tmp \
 		-DWITH_ANDROID_CAMERA=OFF \
 		-DWITH_AVFOUNDATION=OFF \
 		-DWITH_CARBON=OFF \
+		\
 		-DWITH_CUBLAS=ON \
 		-DWITH_CUDA=ON \
 		-DWITH_CUFFT=ON \
+		\
 		-DWITH_EIGEN=ON \
 		-DWITH_IMAGEIO=OFF \
 		-DWITH_IPP=ON \
@@ -163,7 +181,8 @@ RUN cd /tmp \
 		-DWITH_TIFF=OFF \
 		-DWITH_V4L=OFF \
 		.. \
-		&& make -j4 && make install
+		&& make -j9 && make install \
+		&& rm *.tar.gz
 
 # launch
 # here will be jypiter
